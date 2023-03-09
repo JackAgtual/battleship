@@ -21,5 +21,9 @@ describe('Ship', () => {
         const shipWithMoreHitsThanLength = Ship({ length: 6, numHits: 7 })
         expect(shipWithMoreHitsThanLength.isSunk()).toBeTruthy()
     })
-})
 
+    it('should increment num hits when hit', () => {
+        const ship = Ship({ length: 3 })
+        expect(ship.hit()).toBe(1)
+    })
+})
