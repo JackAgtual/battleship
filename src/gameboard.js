@@ -47,7 +47,7 @@ function Gameboard() {
         return _grid
     }
 
-    const receiveAttack = coordinate => {
+    const receiveAttack = ({ coordinate, grid = _grid }) => {
 
     }
 
