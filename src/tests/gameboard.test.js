@@ -56,4 +56,8 @@ describe('Gameboard', () => {
 
         expect(gridWithShipRight).toEqual(grid)
     })
+
+    it('returns null if orientation is invalid', () => {
+        expect(gameboard.placeShip(mockShip, [3, 1], 'north')).toBeNull()
+    })
 })
