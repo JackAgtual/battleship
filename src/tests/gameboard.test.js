@@ -7,17 +7,16 @@ describe('Gameboard', () => {
         mockShip = {
             getLength: () => 4
         }
-
-    })
-
-    let grid, gameboard
-    beforeEach(() => {
-        gameboard = Gameboard()
-        // set up 10x10 grid
-        grid = Array(10).fill().map(() => Array(10).fill(false))
     })
 
     describe('placeShip()', () => {
+
+        let grid, gameboard
+        beforeEach(() => {
+            gameboard = Gameboard()
+            // set up 10x10 grid
+            grid = Array(10).fill().map(() => Array(10).fill(false))
+        })
 
         it('adds ship with orientation up', () => {
             const gridWithShipUp = gameboard.placeShip(mockShip, [6, 4], 'up')
