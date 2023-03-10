@@ -5,7 +5,20 @@ function Gameboard() {
     const _directionIsValid = direction => ['up', 'down', 'left', 'right'].includes(direction.toLowerCase())
 
     const _shipIsInBounds = (shipLength, origin, direction) => {
-        return true
+        const [row, col] = origin
+
+        if (row >= _size || col >= _size) return false
+
+        switch (direction) {
+            case 'up':
+                return shipLength <= row + 1
+            case 'down':
+                return shipLength <= _size - row
+            case 'left':
+                return shipLength <= col + 1
+            case 'right':
+                return shipLength <= _size - col
+        }
     }
 
     const placeShip = (ship, origin, direction) => {
