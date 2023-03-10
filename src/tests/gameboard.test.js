@@ -60,4 +60,24 @@ describe('Gameboard', () => {
     it('returns null if orientation is invalid', () => {
         expect(gameboard.placeShip(mockShip, [3, 1], 'north')).toBeNull()
     })
+
+    it('returns null if origin is out of bounds', () => {
+        expect(gameboard.placeShip(mockShip, [10, 0], 'right')).toBeNull()
+    })
+
+    it('returns null if ship is too long for up orientation', () => {
+        expect(gameboard.placeShip(mockShip, [2, 4], 'up')).toBeNull()
+    })
+
+    it('returns null if ship is too long for down orientation', () => {
+        expect(gameboard.placeShip(mockShip, [9, 0], 'down')).toBeNull()
+    })
+
+    it('returns null if ship is too long for left orientation', () => {
+        expect(gameboard.placeShip(mockShip, [5, 2], 'left')).toBeNull()
+    })
+
+    it('returns null if ship is too long for right orientation', () => {
+        expect(gameboard.placeShip(mockShip, [1, 8], 'right')).toBeNull()
+    })
 })
