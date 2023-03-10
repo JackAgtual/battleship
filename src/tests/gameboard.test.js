@@ -82,4 +82,30 @@ describe('Gameboard', () => {
             expect(gameboard.placeShip(mockShip, [1, 8], 'right')).toBeFalsy()
         })
     })
+
+    describe('receiveAttack()', () => {
+
+        let attackGrid, shipGrid
+        beforeEach(() => {
+            const gridSize = 10
+            shipGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(false))
+
+            // ship 1
+            shipGrid[0][6] = true
+            shipGrid[0][7] = true
+            shipGrid[0][8] = true
+            shipGrid[0][9] = true
+
+            // ship 2
+            shipGrid[7][2] = true
+            shipGrid[8][2] = true
+
+            attackGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(false))
+            // previous attacks
+            attackGrid[7][2] = true
+            attackGrid[3][6] = true
+            attackGrid[2][2] = true
+            attackGrid[0][8] = true
+        })
+    })
 })
