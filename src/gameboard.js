@@ -1,6 +1,6 @@
 function Gameboard() {
     const _size = 10
-    const _grid = Array(_size).fill().map(() => Array(_size).fill(0))
+    const _grid = Array(_size).fill().map(() => Array(_size).fill(false))
 
     const placeShip = (ship, origin, direction) => {
 
