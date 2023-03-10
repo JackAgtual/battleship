@@ -1,7 +1,7 @@
 function Gameboard() {
     const _gridSize = 10
-    const _grid = Array(_gridSize).fill().map(() => Array(_gridSize).fill(false))
-    const _attacks = Array(_gridSize).fill().map(() => Array(_gridSize).fill(false))
+    const _shipGrid = Array(_gridSize).fill().map(() => Array(_gridSize).fill(false))
+    const _attackGrid = Array(_gridSize).fill().map(() => Array(_gridSize).fill(false))
 
     const _directionIsValid = direction => ['up', 'down', 'left', 'right'].includes(direction.toLowerCase())
 
@@ -32,23 +32,23 @@ function Gameboard() {
         for (let i = 0; i < shipLength; i++) {
             switch (direction) {
                 case 'up':
-                    _grid[row - i][col] = true
+                    _shipGrid[row - i][col] = true
                     break
                 case 'down':
-                    _grid[row + i][col] = true
+                    _shipGrid[row + i][col] = true
                     break
                 case 'left':
-                    _grid[row][col - i] = true
+                    _shipGrid[row][col - i] = true
                     break
                 case 'right':
-                    _grid[row][col + i] = true
+                    _shipGrid[row][col + i] = true
                     break
             }
         }
-        return _grid
+        return _shipGrid
     }
 
-    const receiveAttack = ({ attackCoordinate, attackGrid = _attacks, shipGrid = _grid }) => {
+    const receiveAttack = ({ attackCoordinate, attackGrid = _attackGrid, shipGrid = _shipGrid }) => {
 
     }
 
