@@ -1,6 +1,7 @@
 function Gameboard() {
     const _gridSize = 10
     const _grid = Array(_gridSize).fill().map(() => Array(_gridSize).fill(false))
+    const _attacks = Array(_gridSize).fill().map(() => Array(_gridSize).fill(false))
 
     const _directionIsValid = direction => ['up', 'down', 'left', 'right'].includes(direction.toLowerCase())
 
@@ -47,7 +48,7 @@ function Gameboard() {
         return _grid
     }
 
-    const receiveAttack = ({ coordinate, grid = _grid }) => {
+    const receiveAttack = ({ attackCoordinate, attackGrid = _attacks, shipGrid = _grid }) => {
 
     }
 
