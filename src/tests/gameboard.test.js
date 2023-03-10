@@ -9,11 +9,15 @@ describe('Gameboard', () => {
         }
     })
 
+    let gameboard
+    beforeEach(() => {
+        gameboard = Gameboard()
+    })
+
     describe('placeShip()', () => {
 
-        let grid, gameboard
+        let grid
         beforeEach(() => {
-            gameboard = Gameboard()
             // set up 10x10 grid
             grid = Array(10).fill().map(() => Array(10).fill(false))
         })
