@@ -2,11 +2,11 @@ const Gameboard = require("../gameboard");
 
 describe('Gameboard', () => {
 
-    let gameboard, mockShip
-    let shipHit = false
+    let gameboard, mockShip, shipHit
     beforeEach(() => {
         gameboard = Gameboard()
 
+        shipHit = false
         mockShip = {
             getLength: () => 4,
             hit: () => shipHit = true
@@ -137,6 +137,18 @@ describe('Gameboard', () => {
                 attackGrid,
                 shipGrid
             })).toBeFalsy()
+        })
+
+        it('calls hit method on ship if ship is hit', () => {
+            expect(shipHit).toBe(false)
+
+            gameboard.receiveAttack({
+                attackCoordinate: [8, 2],
+                attackGrid,
+                shipGrid
+            })
+
+            expect(shipHit).toBe(true)
         })
     })
 })

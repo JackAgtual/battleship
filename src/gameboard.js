@@ -58,7 +58,12 @@ function Gameboard() {
         if (_coordinateIsOutOfBounds(attackCoordinate)) return null
         if (!!attackGrid[row][col]) return null
 
+        // record attack
         attackGrid[row][col] = true
+
+        // if it's a ship, hit it
+        const ship = shipGrid[row][col]
+        if (!!ship) ship.hit()
 
         return attackGrid
     }
