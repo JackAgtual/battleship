@@ -112,5 +112,33 @@ describe('Gameboard', () => {
             attackGrid[2][2] = true
             attackGrid[0][8] = true
         })
+
+        it('updates attack grid when a missed attack is received', () => {
+            const updatedAttackGrid = gameboard.receiveAttack({
+                attackCoordinate: [4, 4],
+                attackGrid,
+                shipGrid
+            })
+
+            attackGrid[4][4] = true
+
+            expect(updatedAttackGrid).toEqual(attackGrid)
+        })
+
+        it('does not allow repeat attacks', () => {
+            expect(gameboard.receiveAttack({
+                attackCoordinate: [7, 2],
+                attackGrid,
+                shipGrid
+            })).toBeFalsy()
+        })
+
+        it('does not allow attacks out of bounds', () => {
+            expect(gameboard.receiveAttack({
+                attackCoordinate: [11, 4],
+                attackGrid,
+                shipGrid
+            })).toBeFalsy()
+        })
     })
 })
