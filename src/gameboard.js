@@ -5,10 +5,14 @@ function Gameboard() {
 
     const _directionIsValid = direction => ['up', 'down', 'left', 'right'].includes(direction.toLowerCase())
 
+    const _coordinateIsOutOfBounds = coordinate => {
+        const [row, col] = coordinate
+        return row >= _gridSize || col >= _gridSize
+    }
     const _shipIsInBounds = (shipLength, origin, direction) => {
         const [row, col] = origin
 
-        if (row >= _gridSize || col >= _gridSize) return false
+        if (_coordinateIsOutOfBounds(origin)) return false
 
         switch (direction) {
             case 'up':
@@ -49,7 +53,14 @@ function Gameboard() {
     }
 
     const receiveAttack = ({ attackCoordinate, attackGrid = _attackGrid, shipGrid = _shipGrid }) => {
+        const [row, col] = attackCoordinate
 
+        if (_coordinateIsOutOfBounds(attackCoordinate)) return null
+        if (!!attackGrid[row][col]) return null
+
+        attackGrid[row][col] = true
+
+        return attackGrid
     }
 
     return {
