@@ -150,5 +150,16 @@ describe('Gameboard', () => {
 
             expect(shipHit).toBe(true)
         })
+
+        it('does not call hit method on ship if ship is not hit', () => {
+            expect(shipHit).toBe(false)
+
+            gameboard.receiveAttack({
+                attackCoordinate: [1, 1],
+                attackGrid,
+                shipGrid
+            })
+            expect(shipHit).toBe(false)
+        })
     })
 })
