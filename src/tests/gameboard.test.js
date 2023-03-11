@@ -3,12 +3,13 @@ const Gameboard = require("../gameboard");
 describe('Gameboard', () => {
 
     let gameboard, mockShip
+    let shipHit = false
     beforeEach(() => {
         gameboard = Gameboard()
 
         mockShip = {
             getLength: () => 4,
-            hit: () => 2
+            hit: () => shipHit = true
         }
     })
 
