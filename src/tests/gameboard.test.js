@@ -2,17 +2,14 @@ const Gameboard = require("../gameboard");
 
 describe('Gameboard', () => {
 
-    let mockShip;
-    beforeAll(() => {
+    let gameboard, mockShip
+    beforeEach(() => {
+        gameboard = Gameboard()
+
         mockShip = {
             getLength: () => 4,
             hit: () => 2
         }
-    })
-
-    let gameboard
-    beforeEach(() => {
-        gameboard = Gameboard()
     })
 
     describe('placeShip()', () => {
