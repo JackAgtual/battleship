@@ -32,16 +32,16 @@ function Gameboard() {
         for (let i = 0; i < shipLength; i++) {
             switch (direction) {
                 case 'up':
-                    _shipGrid[row - i][col] = true
+                    _shipGrid[row - i][col] = ship
                     break
                 case 'down':
-                    _shipGrid[row + i][col] = true
+                    _shipGrid[row + i][col] = ship
                     break
                 case 'left':
-                    _shipGrid[row][col - i] = true
+                    _shipGrid[row][col - i] = ship
                     break
                 case 'right':
-                    _shipGrid[row][col + i] = true
+                    _shipGrid[row][col + i] = ship
                     break
             }
         }

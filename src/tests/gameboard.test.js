@@ -24,40 +24,40 @@ describe('Gameboard', () => {
 
         it('adds ship with orientation up', () => {
             const gridWithShipUp = gameboard.placeShip(mockShip, [6, 4], 'up')
-            grid[6][4] = true
-            grid[5][4] = true
-            grid[4][4] = true
-            grid[3][4] = true
+            grid[6][4] = mockShip
+            grid[5][4] = mockShip
+            grid[4][4] = mockShip
+            grid[3][4] = mockShip
 
             expect(gridWithShipUp).toEqual(grid)
         })
 
         it('adds ship with orientation down', () => {
             const gridWithShipDown = gameboard.placeShip(mockShip, [2, 0], 'down')
-            grid[2][0] = true
-            grid[3][0] = true
-            grid[4][0] = true
-            grid[5][0] = true
+            grid[2][0] = mockShip
+            grid[3][0] = mockShip
+            grid[4][0] = mockShip
+            grid[5][0] = mockShip
 
             expect(gridWithShipDown).toEqual(grid)
         })
 
         it('adds ship with orientation left', () => {
             const gridWithShipLeft = gameboard.placeShip(mockShip, [4, 9], 'left')
-            grid[4][9] = true
-            grid[4][8] = true
-            grid[4][7] = true
-            grid[4][6] = true
+            grid[4][9] = mockShip
+            grid[4][8] = mockShip
+            grid[4][7] = mockShip
+            grid[4][6] = mockShip
 
             expect(gridWithShipLeft).toEqual(grid)
         })
 
         it('adds ship with orientation right', () => {
             const gridWithShipRight = gameboard.placeShip(mockShip, [9, 3], 'right')
-            grid[9][3] = true
-            grid[9][4] = true
-            grid[9][5] = true
-            grid[9][6] = true
+            grid[9][3] = mockShip
+            grid[9][4] = mockShip
+            grid[9][5] = mockShip
+            grid[9][6] = mockShip
 
             expect(gridWithShipRight).toEqual(grid)
         })
