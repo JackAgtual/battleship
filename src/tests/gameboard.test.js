@@ -5,7 +5,8 @@ describe('Gameboard', () => {
     let mockShip;
     beforeAll(() => {
         mockShip = {
-            getLength: () => 4
+            getLength: () => 4,
+            hit: () => 2
         }
     })
 
@@ -95,14 +96,14 @@ describe('Gameboard', () => {
             shipGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(false))
 
             // ship 1
-            shipGrid[0][6] = true
-            shipGrid[0][7] = true
-            shipGrid[0][8] = true
-            shipGrid[0][9] = true
+            shipGrid[0][6] = mockShip
+            shipGrid[0][7] = mockShip
+            shipGrid[0][8] = mockShip
+            shipGrid[0][9] = mockShip
 
             // ship 2
-            shipGrid[7][2] = true
-            shipGrid[8][2] = true
+            shipGrid[7][2] = mockShip
+            shipGrid[8][2] = mockShip
 
             attackGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(false))
             // previous attacks
