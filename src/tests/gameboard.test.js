@@ -1,3 +1,4 @@
+import _ from 'lodash'
 const Gameboard = require("../gameboard");
 
 describe('Gameboard', () => {
@@ -111,15 +112,17 @@ describe('Gameboard', () => {
             attackGrid[0][8] = true
         })
 
-        it('updates attack grid when a missed attack is received', () => {
+        it.only('updates attack grid when a missed attack is received', () => {
+            const attackGridClone = _.cloneDeep(attackGrid)
+            expect(attackGrid).toEqual(attackGridClone)
+
             const updatedAttackGrid = gameboard.receiveAttack({
                 attackCoordinate: [4, 4],
-                attackGrid,
+                attackGrid: attackGridClone,
                 shipGrid
             })
 
             attackGrid[4][4] = true
-
             expect(updatedAttackGrid).toEqual(attackGrid)
         })
 
