@@ -89,7 +89,7 @@ describe('Gameboard', () => {
 
     describe('receiveAttack()', () => {
 
-        let attackGrid, shipGrid
+        let hits, misses, shipGrid
         beforeEach(() => {
             const gridSize = 10
             shipGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(false))
@@ -104,32 +104,57 @@ describe('Gameboard', () => {
             shipGrid[7][2] = mockShip
             shipGrid[8][2] = mockShip
 
-            attackGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(false))
             // previous attacks
-            attackGrid[7][2] = true
-            attackGrid[3][6] = true
-            attackGrid[2][2] = true
-            attackGrid[0][8] = true
+            hits = [
+                [7, 2],
+                [0, 8]
+            ]
+            misses = [
+                [3, 6],
+                [2, 2],
+            ]
         })
 
-        it.only('updates attack grid when a missed attack is received', () => {
-            const attackGridClone = _.cloneDeep(attackGrid)
-            expect(attackGrid).toEqual(attackGridClone)
+        it('appends misses when a missed attack is received and does not modify hits', () => {
+            const hitsClone = _.cloneDeep(hits)
+            const missesClone = _.cloneDeep(misses)
 
-            const updatedAttackGrid = gameboard.receiveAttack({
+            const [updatedHits, updatedMisses] = gameboard.receiveAttack({
                 attackCoordinate: [4, 4],
-                attackGrid: attackGridClone,
+                hits: hitsClone,
+                misses: missesClone,
                 shipGrid
             })
 
-            attackGrid[4][4] = true
-            expect(updatedAttackGrid).toEqual(attackGrid)
+            misses.push([4, 4])
+
+            expect(updatedHits).toEqual(hits)
+            expect(updatedMisses).toEqual(misses)
         })
+
+        it.only('appends hits when hit attack is received and does not modify misses', () => {
+            const hitsClone = _.cloneDeep(hits)
+            const missesClone = _.cloneDeep(misses)
+
+            const [updatedHits, updatedMisses] = gameboard.receiveAttack({
+                attackCoordinate: [0, 6],
+                hits: hitsClone,
+                misses: missesClone,
+                shipGrid
+            })
+
+            hits.push([0, 6])
+
+            expect(updatedHits).toEqual(hits)
+            expect(updatedMisses).toEqual(misses)
+        })
+
 
         it('does not allow repeat attacks', () => {
             expect(gameboard.receiveAttack({
                 attackCoordinate: [7, 2],
-                attackGrid,
+                hits,
+                misses,
                 shipGrid
             })).toBeFalsy()
         })
@@ -137,7 +162,8 @@ describe('Gameboard', () => {
         it('does not allow attacks out of bounds', () => {
             expect(gameboard.receiveAttack({
                 attackCoordinate: [11, 4],
-                attackGrid,
+                hits,
+                misses,
                 shipGrid
             })).toBeFalsy()
         })
@@ -147,7 +173,8 @@ describe('Gameboard', () => {
 
             gameboard.receiveAttack({
                 attackCoordinate: [8, 2],
-                attackGrid,
+                hits,
+                misses,
                 shipGrid
             })
 
@@ -159,7 +186,8 @@ describe('Gameboard', () => {
 
             gameboard.receiveAttack({
                 attackCoordinate: [1, 1],
-                attackGrid,
+                hits,
+                misses,
                 shipGrid
             })
             expect(shipHit).toBe(false)
