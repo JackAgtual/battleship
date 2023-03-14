@@ -132,7 +132,7 @@ describe('Gameboard', () => {
             expect(updatedMisses).toEqual(misses)
         })
 
-        it.only('appends hits when hit attack is received and does not modify misses', () => {
+        it('appends hits when hit attack is received and does not modify misses', () => {
             const hitsClone = _.cloneDeep(hits)
             const missesClone = _.cloneDeep(misses)
 
@@ -150,9 +150,18 @@ describe('Gameboard', () => {
         })
 
 
-        it('does not allow repeat attacks', () => {
+        it('does not allow repeat attacks on missed coordinates', () => {
             expect(gameboard.receiveAttack({
-                attackCoordinate: [7, 2],
+                attackCoordinate: [3, 6],
+                hits,
+                misses,
+                shipGrid
+            })).toBeFalsy()
+        })
+
+        it('does not allow repeat attacks on hit coordinates', () => {
+            expect(gameboard.receiveAttack({
+                attackCoordinate: [0, 8],
                 hits,
                 misses,
                 shipGrid
