@@ -3,6 +3,7 @@ import _ from 'lodash'
 function Gameboard() {
     const _gridSize = 10
     const _shipGrid = Array(_gridSize).fill().map(() => Array(_gridSize).fill(false))
+    const _ships = []
     const _missedAttacks = []
     const _hitAttacks = []
 
@@ -15,7 +16,6 @@ function Gameboard() {
 
     const _coordinateHasAlreadyBeenAttacked = ({ coordinate, hits = _hitAttacks, misses = _missedAttacks }) => {
         // check hits and misses arrays
-        console.log(coordinate)
         for (let i = 0; i < hits.length; i++) {
             if (_.isEqual(hits[i], coordinate)) return true
         }
@@ -42,30 +42,62 @@ function Gameboard() {
         }
     }
 
-    const placeShip = (ship, origin, direction) => {
-        direction = direction.toLowerCase()
+    const _getShipCoordinates = ({
+        shipLength,
+        origin,
+        direction
+    }) => {
         const [row, col] = origin
+        const shipCoordinates = []
+        for (let i = 0; i < shipLength; i++) {
+            switch (direction) {
+                case 'up':
+                    shipCoordinates.push([row - i, col])
+                    break
+                case 'down':
+                    shipCoordinates.push([row + i, col])
+                    break
+                case 'left':
+                    shipCoordinates.push([row, col - i])
+                    break
+                case 'right':
+                    shipCoordinates.push([row, col + i])
+                    break
+            }
+        }
+        return shipCoordinates
+    }
+
+    const _shipOverlapsWithExistingShip = ({ shipCoordinates, shipGrid }) => {
+        for (let i = 0; i < shipCoordinates.length; i++) {
+            const [row, col] = shipCoordinates[i]
+            if (!!shipGrid[row][col]) return true
+        }
+        return false
+    }
+
+    const placeShip = ({ ship, origin, direction, shipGrid = _shipGrid }) => {
+        direction = direction.toLowerCase()
         const shipLength = ship.getLength()
 
         if (!_directionIsValid(direction) || !_shipIsInBounds(shipLength, origin, direction)) return null
 
-        for (let i = 0; i < shipLength; i++) {
-            switch (direction) {
-                case 'up':
-                    _shipGrid[row - i][col] = ship
-                    break
-                case 'down':
-                    _shipGrid[row + i][col] = ship
-                    break
-                case 'left':
-                    _shipGrid[row][col - i] = ship
-                    break
-                case 'right':
-                    _shipGrid[row][col + i] = ship
-                    break
-            }
-        }
-        return _shipGrid
+        const shipCoordinates = _getShipCoordinates({
+            shipLength,
+            origin,
+            direction
+        })
+
+        if (_shipOverlapsWithExistingShip({
+            shipCoordinates,
+            shipGrid
+        })) return null;
+
+        shipCoordinates.forEach(coordinate => {
+            shipGrid[coordinate[0]][coordinate[1]] = ship
+        })
+
+        return shipGrid
     }
 
     const receiveAttack = ({
@@ -96,9 +128,14 @@ function Gameboard() {
         return [hits, misses]
     }
 
+    const allShipsAreSunk = () => {
+
+    }
+
     return {
         placeShip,
-        receiveAttack
+        receiveAttack,
+        allShipsAreSunk
     }
 }
 

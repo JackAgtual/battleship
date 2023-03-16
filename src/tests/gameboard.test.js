@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _, { clone } from 'lodash'
 const Gameboard = require("../gameboard");
 
 describe('Gameboard', () => {
@@ -23,7 +23,12 @@ describe('Gameboard', () => {
         })
 
         it('adds ship with orientation up', () => {
-            const gridWithShipUp = gameboard.placeShip(mockShip, [6, 4], 'up')
+            const gridWithShipUp = gameboard.placeShip({
+                ship: mockShip,
+                origin: [6, 4],
+                direction: 'up',
+                shipGrid: grid
+            })
             grid[6][4] = mockShip
             grid[5][4] = mockShip
             grid[4][4] = mockShip
@@ -33,7 +38,12 @@ describe('Gameboard', () => {
         })
 
         it('adds ship with orientation down', () => {
-            const gridWithShipDown = gameboard.placeShip(mockShip, [2, 0], 'down')
+            const gridWithShipDown = gameboard.placeShip({
+                ship: mockShip,
+                origin: [2, 0],
+                direction: 'down',
+                shipGrid: grid
+            })
             grid[2][0] = mockShip
             grid[3][0] = mockShip
             grid[4][0] = mockShip
@@ -43,7 +53,12 @@ describe('Gameboard', () => {
         })
 
         it('adds ship with orientation left', () => {
-            const gridWithShipLeft = gameboard.placeShip(mockShip, [4, 9], 'left')
+            const gridWithShipLeft = gameboard.placeShip({
+                ship: mockShip,
+                origin: [4, 9],
+                direction: 'left',
+                shipGrid: grid
+            })
             grid[4][9] = mockShip
             grid[4][8] = mockShip
             grid[4][7] = mockShip
@@ -53,7 +68,12 @@ describe('Gameboard', () => {
         })
 
         it('adds ship with orientation right', () => {
-            const gridWithShipRight = gameboard.placeShip(mockShip, [9, 3], 'right')
+            const gridWithShipRight = gameboard.placeShip({
+                ship: mockShip,
+                origin: [9, 3],
+                direction: 'right',
+                shipGrid: grid
+            })
             grid[9][3] = mockShip
             grid[9][4] = mockShip
             grid[9][5] = mockShip
@@ -63,28 +83,99 @@ describe('Gameboard', () => {
         })
 
         it('returns falsy if orientation is invalid', () => {
-            expect(gameboard.placeShip(mockShip, [3, 1], 'north')).toBeFalsy()
+            expect(gameboard.placeShip({
+                ship: mockShip,
+                origin: [3, 1],
+                direction: 'north',
+                shipGrid: grid
+            })).toBeFalsy()
         })
 
         it('returns falsy if origin is out of bounds', () => {
-            expect(gameboard.placeShip(mockShip, [10, 0], 'right')).toBeFalsy()
+            expect(gameboard.placeShip({
+                ship: mockShip,
+                origin: [10, 0],
+                direction: 'right',
+                shipGrid: grid
+            })).toBeFalsy()
         })
 
         it('returns falsy if ship is too long for up orientation', () => {
-            expect(gameboard.placeShip(mockShip, [2, 4], 'up')).toBeFalsy()
+            expect(gameboard.placeShip({
+                ship: mockShip,
+                origin: [2, 4],
+                direction: 'up',
+                shipGrid: grid
+            })).toBeFalsy()
         })
 
         it('returns falsy if ship is too long for down orientation', () => {
-            expect(gameboard.placeShip(mockShip, [9, 0], 'down')).toBeFalsy()
+            expect(gameboard.placeShip({
+                ship: mockShip,
+                origin: [9, 0],
+                direction: 'down',
+                shipGrid: grid
+            })).toBeFalsy()
         })
 
         it('returns falsy if ship is too long for left orientation', () => {
-            expect(gameboard.placeShip(mockShip, [5, 2], 'left')).toBeFalsy()
+            expect(gameboard.placeShip({
+                ship: mockShip,
+                origin: [5, 2],
+                direction: 'left',
+                shipGrid: grid
+            })).toBeFalsy()
         })
 
         it('returns falsy if ship is too long for right orientation', () => {
-            expect(gameboard.placeShip(mockShip, [1, 8], 'right')).toBeFalsy()
+            expect(gameboard.placeShip({
+                ship: mockShip,
+                origin: [1, 8],
+                direction: 'right',
+                shipGrid: grid
+            })).toBeFalsy()
         })
+
+        it('returns falsy if ship overlaps with existing ship', () => {
+            grid[5][5] = mockShip
+            grid[5][6] = mockShip
+            grid[5][7] = mockShip
+            grid[5][8] = mockShip
+
+            expect(gameboard.placeShip({
+                ship: mockShip,
+                origin: [3, 8],
+                direction: 'down',
+                shipGrid: grid
+            })).toBeFalsy()
+        })
+
+        it('adds ships with existing ships on gameboard', () => {
+            grid[5][5] = mockShip
+            grid[5][6] = mockShip
+            grid[5][7] = mockShip
+            grid[5][8] = mockShip
+
+            const clonedGrid = _.cloneDeep(grid)
+
+            const gameboardWithTwoShips = gameboard.placeShip({
+                ship: mockShip,
+                origin: [6, 8],
+                direction: 'down',
+                shipGrid: grid
+            })
+            // CONTINUE HERE
+            clonedGrid[6][8] = mockShip
+            clonedGrid[7][8] = mockShip
+            clonedGrid[8][8] = mockShip
+            clonedGrid[9][8] = mockShip
+
+            expect(gameboardWithTwoShips).toEqual(clonedGrid)
+        })
+
+        // it('updates ships array when new ship is placed', () => {
+
+        // })
     })
 
     describe('receiveAttack()', () => {
