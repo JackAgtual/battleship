@@ -97,6 +97,8 @@ function Gameboard() {
             shipGrid[coordinate[0]][coordinate[1]] = ship
         })
 
+        _ships.push(ship)
+
         return shipGrid
     }
 
@@ -128,8 +130,13 @@ function Gameboard() {
         return [hits, misses]
     }
 
-    const allShipsAreSunk = () => {
+    const allShipsAreSunk = (shipsOnGameboard = _ships) => {
+        if (shipsOnGameboard.length === 0) return false;
 
+        for (let i = 0; i < shipsOnGameboard.length; i++) {
+            if (!shipsOnGameboard[i].isSunk()) return false;
+        }
+        return true
     }
 
     return {

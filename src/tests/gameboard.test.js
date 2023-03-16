@@ -3,14 +3,18 @@ const Gameboard = require("../gameboard");
 
 describe('Gameboard', () => {
 
-    let gameboard, mockShip, shipHit
+    let gameboard, mockShip, mockSunkShip, shipHit
     beforeEach(() => {
         gameboard = Gameboard()
 
         shipHit = false
         mockShip = {
             getLength: () => 4,
-            hit: () => shipHit = true
+            hit: () => shipHit = true,
+            isSunk: () => false
+        }
+        mockSunkShip = {
+            isSunk: () => true
         }
     })
 
@@ -172,10 +176,6 @@ describe('Gameboard', () => {
 
             expect(gameboardWithTwoShips).toEqual(clonedGrid)
         })
-
-        // it('updates ships array when new ship is placed', () => {
-
-        // })
     })
 
     describe('receiveAttack()', () => {
@@ -291,6 +291,24 @@ describe('Gameboard', () => {
                 shipGrid
             })
             expect(shipHit).toBe(false)
+        })
+    })
+
+    describe('allShipsAreSunk()', () => {
+
+        it('return false when there are no ships', () => {
+            const emptyShipsArray = []
+            expect(gameboard.allShipsAreSunk(emptyShipsArray)).toBeFalsy()
+        })
+
+        it('returns true when all ships on board are sunk', () => {
+            const allShipsSunkArray = [mockSunkShip, mockSunkShip, mockSunkShip]
+            expect(gameboard.allShipsAreSunk(allShipsSunkArray)).toBeTruthy()
+        })
+
+        it('returns false when not all ships on board are sunk', () => {
+            const sunkAndNotSunkShipsArray = [mockShip, mockSunkShip, mockShip, mockShip]
+            expect(gameboard.allShipsAreSunk(sunkAndNotSunkShipsArray)).toBeFalsy()
         })
     })
 })
