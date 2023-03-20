@@ -31,7 +31,7 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [6, 4],
                 direction: 'up',
-                shipGrid: grid
+                shipGrid: _.cloneDeep(grid)
             })
             grid[6][4] = mockShip
             grid[5][4] = mockShip
@@ -46,7 +46,7 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [2, 0],
                 direction: 'down',
-                shipGrid: grid
+                shipGrid: _.cloneDeep(grid)
             })
             grid[2][0] = mockShip
             grid[3][0] = mockShip
@@ -61,7 +61,7 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [4, 9],
                 direction: 'left',
-                shipGrid: grid
+                shipGrid: _.cloneDeep(grid)
             })
             grid[4][9] = mockShip
             grid[4][8] = mockShip
@@ -76,7 +76,7 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [9, 3],
                 direction: 'right',
-                shipGrid: grid
+                shipGrid: _.cloneDeep(grid)
             })
             grid[9][3] = mockShip
             grid[9][4] = mockShip
@@ -91,7 +91,7 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [3, 1],
                 direction: 'north',
-                shipGrid: grid
+                shipGrid: _.cloneDeep(grid)
             })).toBeFalsy()
         })
 
@@ -100,7 +100,7 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [10, 0],
                 direction: 'right',
-                shipGrid: grid
+                shipGrid: _.cloneDeep(grid)
             })).toBeFalsy()
         })
 
@@ -109,7 +109,7 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [2, 4],
                 direction: 'up',
-                shipGrid: grid
+                shipGrid: _.cloneDeep(grid)
             })).toBeFalsy()
         })
 
@@ -118,7 +118,7 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [9, 0],
                 direction: 'down',
-                shipGrid: grid
+                shipGrid: _.cloneDeep(grid)
             })).toBeFalsy()
         })
 
@@ -127,7 +127,7 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [5, 2],
                 direction: 'left',
-                shipGrid: grid
+                shipGrid: _.cloneDeep(grid)
             })).toBeFalsy()
         })
 
@@ -136,7 +136,7 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [1, 8],
                 direction: 'right',
-                shipGrid: grid
+                shipGrid: _.cloneDeep(grid)
             })).toBeFalsy()
         })
 
@@ -150,7 +150,7 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [3, 8],
                 direction: 'down',
-                shipGrid: grid
+                shipGrid: _.cloneDeep(grid)
             })).toBeFalsy()
         })
 
@@ -168,7 +168,7 @@ describe('Gameboard', () => {
                 direction: 'down',
                 shipGrid: grid
             })
-            // CONTINUE HERE
+
             clonedGrid[6][8] = mockShip
             clonedGrid[7][8] = mockShip
             clonedGrid[8][8] = mockShip
