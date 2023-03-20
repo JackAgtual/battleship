@@ -20,70 +20,87 @@ describe('Gameboard', () => {
 
     describe('placeShip()', () => {
 
-        let grid
+        let grid, ships
         beforeEach(() => {
             // set up 10x10 grid
             grid = Array(10).fill().map(() => Array(10).fill(false))
+            ships = []
         })
 
         it('adds ship with orientation up', () => {
-            const gridWithShipUp = gameboard.placeShip({
+            const [gridWithShipUp, populatedShips] = gameboard.placeShip({
                 ship: mockShip,
                 origin: [6, 4],
                 direction: 'up',
-                shipGrid: _.cloneDeep(grid)
+                shipGrid: _.cloneDeep(grid),
+                ships: _.cloneDeep(ships)
             })
             grid[6][4] = mockShip
             grid[5][4] = mockShip
             grid[4][4] = mockShip
             grid[3][4] = mockShip
 
+            ships.push(mockShip)
+
             expect(gridWithShipUp).toEqual(grid)
+            expect(ships).toEqual(populatedShips)
         })
 
         it('adds ship with orientation down', () => {
-            const gridWithShipDown = gameboard.placeShip({
+            const [gridWithShipDown, populatedShips] = gameboard.placeShip({
                 ship: mockShip,
                 origin: [2, 0],
                 direction: 'down',
-                shipGrid: _.cloneDeep(grid)
+                shipGrid: _.cloneDeep(grid),
+                ships: _.cloneDeep(ships)
             })
             grid[2][0] = mockShip
             grid[3][0] = mockShip
             grid[4][0] = mockShip
             grid[5][0] = mockShip
 
+            ships.push(mockShip)
+
             expect(gridWithShipDown).toEqual(grid)
+            expect(ships).toEqual(populatedShips)
         })
 
         it('adds ship with orientation left', () => {
-            const gridWithShipLeft = gameboard.placeShip({
+            const [gridWithShipLeft, populatedShips] = gameboard.placeShip({
                 ship: mockShip,
                 origin: [4, 9],
                 direction: 'left',
-                shipGrid: _.cloneDeep(grid)
+                shipGrid: _.cloneDeep(grid),
+                ships: _.cloneDeep(ships)
             })
             grid[4][9] = mockShip
             grid[4][8] = mockShip
             grid[4][7] = mockShip
             grid[4][6] = mockShip
 
+            ships.push(mockShip)
+
             expect(gridWithShipLeft).toEqual(grid)
+            expect(ships).toEqual(populatedShips)
         })
 
         it('adds ship with orientation right', () => {
-            const gridWithShipRight = gameboard.placeShip({
+            const [gridWithShipRight, populatedShips] = gameboard.placeShip({
                 ship: mockShip,
                 origin: [9, 3],
                 direction: 'right',
-                shipGrid: _.cloneDeep(grid)
+                shipGrid: _.cloneDeep(grid),
+                ships: _.cloneDeep(ships)
             })
             grid[9][3] = mockShip
             grid[9][4] = mockShip
             grid[9][5] = mockShip
             grid[9][6] = mockShip
 
+            ships.push(mockShip)
+
             expect(gridWithShipRight).toEqual(grid)
+            expect(ships).toEqual(populatedShips)
         })
 
         it('returns falsy if orientation is invalid', () => {
@@ -91,7 +108,8 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [3, 1],
                 direction: 'north',
-                shipGrid: _.cloneDeep(grid)
+                shipGrid: _.cloneDeep(grid),
+                ships: _.cloneDeep(ships)
             })).toBeFalsy()
         })
 
@@ -100,7 +118,8 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [10, 0],
                 direction: 'right',
-                shipGrid: _.cloneDeep(grid)
+                shipGrid: _.cloneDeep(grid),
+                ships: _.cloneDeep(ships)
             })).toBeFalsy()
         })
 
@@ -109,7 +128,8 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [2, 4],
                 direction: 'up',
-                shipGrid: _.cloneDeep(grid)
+                shipGrid: _.cloneDeep(grid),
+                ships: _.cloneDeep(ships)
             })).toBeFalsy()
         })
 
@@ -118,7 +138,8 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [9, 0],
                 direction: 'down',
-                shipGrid: _.cloneDeep(grid)
+                shipGrid: _.cloneDeep(grid),
+                ships: _.cloneDeep(ships)
             })).toBeFalsy()
         })
 
@@ -127,7 +148,8 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [5, 2],
                 direction: 'left',
-                shipGrid: _.cloneDeep(grid)
+                shipGrid: _.cloneDeep(grid),
+                ships: _.cloneDeep(ships)
             })).toBeFalsy()
         })
 
@@ -136,7 +158,8 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [1, 8],
                 direction: 'right',
-                shipGrid: _.cloneDeep(grid)
+                shipGrid: _.cloneDeep(grid),
+                ships: _.cloneDeep(ships)
             })).toBeFalsy()
         })
 
@@ -150,7 +173,8 @@ describe('Gameboard', () => {
                 ship: mockShip,
                 origin: [3, 8],
                 direction: 'down',
-                shipGrid: _.cloneDeep(grid)
+                shipGrid: _.cloneDeep(grid),
+                ships: _.cloneDeep(ships)
             })).toBeFalsy()
         })
 
@@ -160,13 +184,16 @@ describe('Gameboard', () => {
             grid[5][7] = mockShip
             grid[5][8] = mockShip
 
+            ships.push(mockShip)
+
             const clonedGrid = _.cloneDeep(grid)
 
-            const gameboardWithTwoShips = gameboard.placeShip({
+            const [gameboardWithTwoShips, populatedShips] = gameboard.placeShip({
                 ship: mockShip,
                 origin: [6, 8],
                 direction: 'down',
-                shipGrid: grid
+                shipGrid: grid,
+                ships: _.cloneDeep(ships)
             })
 
             clonedGrid[6][8] = mockShip
@@ -174,7 +201,10 @@ describe('Gameboard', () => {
             clonedGrid[8][8] = mockShip
             clonedGrid[9][8] = mockShip
 
+            ships.push(mockShip)
+
             expect(gameboardWithTwoShips).toEqual(clonedGrid)
+            expect(ships).toEqual(populatedShips)
         })
     })
 

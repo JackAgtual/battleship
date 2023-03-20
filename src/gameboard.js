@@ -76,7 +76,7 @@ function Gameboard() {
         return false
     }
 
-    const placeShip = ({ ship, origin, direction, shipGrid = _shipGrid }) => {
+    const placeShip = ({ ship, origin, direction, shipGrid = _shipGrid, ships = _ships }) => {
         direction = direction.toLowerCase()
         const shipLength = ship.getLength()
 
@@ -97,9 +97,9 @@ function Gameboard() {
             shipGrid[coordinate[0]][coordinate[1]] = ship
         })
 
-        _ships.push(ship)
+        ships.push(ship)
 
-        return shipGrid
+        return [shipGrid, ships]
     }
 
     const receiveAttack = ({
