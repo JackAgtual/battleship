@@ -139,10 +139,13 @@ function Gameboard() {
         return true
     }
 
+    const getGameboardSize = () => _gridSize
+
     return {
         placeShip,
         receiveAttack,
-        allShipsAreSunk
+        allShipsAreSunk,
+        getGameboardSize
     }
 }
 
