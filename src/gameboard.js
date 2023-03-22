@@ -123,11 +123,12 @@ function Gameboard() {
             // hit
             ship.hit()
             hits.push(attackCoordinate)
-        } else {
-            // miss
-            misses.push(attackCoordinate)
+            return true
         }
-        return [hits, misses]
+
+        // miss
+        misses.push(attackCoordinate)
+        return false
     }
 
     const allShipsAreSunk = (shipsOnGameboard = _ships) => {

@@ -236,38 +236,40 @@ describe('Gameboard', () => {
             ]
         })
 
-        it('appends misses when a missed attack is received and does not modify hits', () => {
+        it('appends misses when a missed attack is received and does not modify hits and returns false', () => {
             const hitsClone = _.cloneDeep(hits)
             const missesClone = _.cloneDeep(misses)
 
-            const [updatedHits, updatedMisses] = gameboard.receiveAttack({
+            const attackResult = gameboard.receiveAttack({
                 attackCoordinate: [4, 4],
-                hits: hitsClone,
-                misses: missesClone,
+                hits,
+                misses,
                 shipGrid
             })
 
-            misses.push([4, 4])
+            missesClone.push([4, 4])
 
-            expect(updatedHits).toEqual(hits)
-            expect(updatedMisses).toEqual(misses)
+            expect(hitsClone).toEqual(hits)
+            expect(missesClone).toEqual(misses)
+            expect(attackResult).toBe(false)
         })
 
-        it('appends hits when hit attack is received and does not modify misses', () => {
+        it('appends hits when hit attack is received and does not modify misses and returns true', () => {
             const hitsClone = _.cloneDeep(hits)
             const missesClone = _.cloneDeep(misses)
 
-            const [updatedHits, updatedMisses] = gameboard.receiveAttack({
+            const attackResult = gameboard.receiveAttack({
                 attackCoordinate: [0, 6],
-                hits: hitsClone,
-                misses: missesClone,
+                hits,
+                misses,
                 shipGrid
             })
 
-            hits.push([0, 6])
+            hitsClone.push([0, 6])
 
-            expect(updatedHits).toEqual(hits)
-            expect(updatedMisses).toEqual(misses)
+            expect(hitsClone).toEqual(hits)
+            expect(missesClone).toEqual(misses)
+            expect(attackResult).toBe(true)
         })
 
 
@@ -277,7 +279,7 @@ describe('Gameboard', () => {
                 hits,
                 misses,
                 shipGrid
-            })).toBeFalsy()
+            })).toBeNull()
         })
 
         it('does not allow repeat attacks on hit coordinates', () => {
@@ -286,7 +288,7 @@ describe('Gameboard', () => {
                 hits,
                 misses,
                 shipGrid
-            })).toBeFalsy()
+            })).toBeNull()
         })
 
         it('does not allow attacks out of bounds', () => {
@@ -295,7 +297,7 @@ describe('Gameboard', () => {
                 hits,
                 misses,
                 shipGrid
-            })).toBeFalsy()
+            })).toBeNull()
         })
 
         it('calls hit method on ship if ship is hit', () => {
