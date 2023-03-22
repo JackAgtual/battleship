@@ -1,14 +1,35 @@
 const Player = require("../player");
 
 describe('Player', () => {
-    let player
-    beforeEach(() => {
-        player = Player()
+    let mockGameboard
+    let receiveAttackCalled = false
+    const gridSize = 10
+    beforeAll(() => {
+        mockGameboard = {
+            getGameboardSize: () => gridSize,
+            receiveAttack: ({ attackCoordinate }) => {
+                receiveAttackCalled = true
+                console.log(attackCoordinate)
+                const [row, col] = attackCoordinate
+                return row < gridSize && col < gridSize
+            }
+        }
+
     })
 
-    it('passes', () => {
-        const val = player.test()
-        expect(val).toBeTruthy()
+    let player
+    beforeEach(() => {
+        player = Player(mockGameboard)
+    })
+
+    it('calls Gameboard.receiveAttack()', () => {
+        expect(receiveAttackCalled).toBeFalsy()
+        player.attackCoordinate([1, 2])
+        expect(receiveAttackCalled).toBeTruthy()
+    })
+
+    it('attacks random coordinate', () => {
+        expect(player.attackRandomCoordinate()).toBeTruthy()
     })
 })
 
