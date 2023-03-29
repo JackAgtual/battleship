@@ -14,7 +14,7 @@ function Gameboard() {
         return row >= _gridSize || col >= _gridSize
     }
 
-    const _coordinateHasAlreadyBeenAttacked = ({ coordinate, hits = _hitAttacks, misses = _missedAttacks }) => {
+    const coordinateHasAlreadyBeenAttacked = ({ coordinate, hits = _hitAttacks, misses = _missedAttacks }) => {
         // check hits and misses arrays
         for (let i = 0; i < hits.length; i++) {
             if (_.isEqual(hits[i], coordinate)) return true
@@ -111,7 +111,7 @@ function Gameboard() {
         const [row, col] = attackCoordinate
 
         if (_coordinateIsOutOfBounds(attackCoordinate)) return null
-        if (_coordinateHasAlreadyBeenAttacked({
+        if (coordinateHasAlreadyBeenAttacked({
             coordinate: attackCoordinate,
             hits,
             misses
@@ -161,6 +161,7 @@ function Gameboard() {
 
     return {
         placeShip,
+        coordinateHasAlreadyBeenAttacked,
         receiveAttack,
         attackRandomCoordinate,
         allShipsAreSunk,
