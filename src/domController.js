@@ -12,7 +12,6 @@ export default function DomController() {
             for (let j = 0; j < _gridSize; j++) {
                 const gridElement = document.createElement('div')
                 gridElement.classList.add('grid-element')
-                gridElement.innerText = `${i}, ${j}`
                 grid.appendChild(gridElement)
             }
         }
