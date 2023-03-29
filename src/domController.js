@@ -3,8 +3,8 @@ export default function DomController() {
 
     const init = () => {
         const root = document.getElementById('root')
-        const gridContainer = document.createElement('div')
-        gridContainer.id = 'grid-container'
+        const gameboardContainer = document.createElement('div')
+        gameboardContainer.id = 'gamebaord-container'
         const grid = document.createElement('div')
         grid.classList.add('gameboard')
 
@@ -16,11 +16,11 @@ export default function DomController() {
             }
         }
         grid.id = 'player-grid'
-        gridContainer.append(grid)
+        gameboardContainer.append(grid)
         const enemyGrid = grid.cloneNode(true)
         enemyGrid.id = 'enemy-grid'
-        gridContainer.append(enemyGrid)
-        root.append(gridContainer)
+        gameboardContainer.append(enemyGrid)
+        root.append(gameboardContainer)
     }
 
     return {
