@@ -131,6 +131,23 @@ function Gameboard() {
         return false
     }
 
+    const attackRandomCoordinate = () => receiveAttack(
+        {
+            attackCoordinate: _getRandomCoordinate(),
+            hits: _hitAttacks,
+            misses: _missedAttacks,
+            shipGrid: _shipGrid
+        }
+    )
+
+    const _getRandomCoordinate = () => {
+        const gridSize = _getGameboardSize()
+        return [
+            Math.floor(Math.random() * gridSize),
+            Math.floor(Math.random() * gridSize)
+        ]
+    }
+
     const allShipsAreSunk = (shipsOnGameboard = _ships) => {
         if (shipsOnGameboard.length === 0) return false;
 
@@ -140,13 +157,13 @@ function Gameboard() {
         return true
     }
 
-    const getGameboardSize = () => _gridSize
+    const _getGameboardSize = () => _gridSize
 
     return {
         placeShip,
         receiveAttack,
+        attackRandomCoordinate,
         allShipsAreSunk,
-        getGameboardSize
     }
 }
 
