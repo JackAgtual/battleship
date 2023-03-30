@@ -11,7 +11,19 @@
     column-gap: calc(var(--element-size) * 1.5);
 }
 
-.gameboard {
+.grid-and-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.grid-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.gameboard-grid {
     display: grid;
     grid-template-columns: repeat(var(--grid-size), var(--element-size));
     grid-template-rows: repeat(var(--grid-size), var(--element-size));
