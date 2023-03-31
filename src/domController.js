@@ -10,6 +10,8 @@ export default function DomController() {
         gameboardContainer.append(_getTitleAndGrid('computer'))
 
         root.append(gameboardContainer)
+
+        _startGameModalInit()
     }
 
     const _generateGrid = gridName => {
@@ -44,6 +46,15 @@ export default function DomController() {
         gridAndTitle.append(gridTitle)
         gridAndTitle.append(grid)
         return gridAndTitle
+    }
+
+    const _startGameModalInit = () => {
+        const modal = document.getElementById('place-ships')
+        modal.append(_generateGrid('laydown'))
+        const startGameBtn = document.getElementById('start-game')
+        startGameBtn.addEventListener('click', () => {
+            modal.showModal()
+        })
     }
 
     return {

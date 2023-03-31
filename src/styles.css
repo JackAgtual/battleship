@@ -3,6 +3,19 @@
     --element-size: 3rem
 }
 
+h1 {
+    text-align: center;
+}
+
+button {
+    width: fit-content;
+    align-self: center;
+}
+
+dialog {
+    height: 100vh;
+}
+
 #gamebaord-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(calc(var(--grid-size) * var(--element-size)), 1fr));
