@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-function Gameboard() {
+export default function Gameboard() {
     const _gridSize = 10
     const _shipGrid = Array(_gridSize).fill().map(() => Array(_gridSize).fill(false))
     const _ships = []
@@ -167,5 +167,3 @@ function Gameboard() {
         allShipsAreSunk,
     }
 }
-
-module.exports = Gameboard

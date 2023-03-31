@@ -1,4 +1,4 @@
-function Player(Gameboard) {
+export default function Player(Gameboard) {
 
     const attackCoordinate = coordinate => Gameboard.receiveAttack({ attackCoordinate: coordinate })
 
@@ -17,5 +17,3 @@ function Player(Gameboard) {
         attackRandomCoordinate
     }
 }
-
-module.exports = Player

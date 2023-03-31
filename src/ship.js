@@ -1,4 +1,4 @@
-function Ship({ length, numHits = 0 }) {
+export default function Ship({ length, numHits = 0 }) {
     const _length = length
     let _numHits = numHits
 
@@ -14,5 +14,3 @@ function Ship({ length, numHits = 0 }) {
         isSunk
     }
 }
-
-module.exports = Ship

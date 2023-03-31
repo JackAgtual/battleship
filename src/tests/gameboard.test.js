@@ -1,5 +1,5 @@
 import _, { clone } from 'lodash'
-const Gameboard = require("../gameboard");
+import Gameboard from '../gameboard';
 
 describe('Gameboard', () => {
 
