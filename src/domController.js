@@ -1,7 +1,7 @@
 export default function DomController() {
     const _gridSize = 10
 
-    const init = () => {
+    const init = Gameboard => {
         const root = document.getElementById('root')
         const gameboardContainer = document.createElement('div')
         gameboardContainer.id = 'gamebaord-container'
@@ -11,7 +11,7 @@ export default function DomController() {
 
         root.append(gameboardContainer)
 
-        _startGameModalInit()
+        _startGameModalInit(Gameboard)
     }
 
     const _generateGrid = gridName => {
@@ -48,13 +48,29 @@ export default function DomController() {
         return gridAndTitle
     }
 
-    const _startGameModalInit = () => {
+    const _startGameModalInit = Gameboard => {
         const modal = document.getElementById('place-ships')
-        modal.append(_generateGrid('laydown'))
+        const laydownGrid = _generateGrid('laydown')
+        laydownGrid.childNodes
+            .forEach(gridElement => gridElement.
+                addEventListener('mouseover', () => _showShipPlacement(gridElement, null))
+            )
+
+        modal.append(laydownGrid)
+
         const startGameBtn = document.getElementById('start-game')
         startGameBtn.addEventListener('click', () => {
+            _placePlayerShips(Gameboard)
             modal.showModal()
         })
+    }
+
+    const _showShipPlacement = (gridElement, ship) => {
+        gridElement.classList.toggle('highlighted')
+    }
+
+    const _placePlayerShips = Gameboard => {
+
     }
 
     return {
