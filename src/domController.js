@@ -12,9 +12,7 @@ export default function DomController() {
         root.append(gameboardContainer)
     }
 
-    const _getTitleAndGrid = gridName => {
-
-        // grid
+    const _generateGrid = gridName => {
         const grid = document.createElement('div')
         grid.classList.add('gameboard-grid')
         grid.id = `${gridName}-grid`
@@ -26,11 +24,19 @@ export default function DomController() {
                 grid.appendChild(gridElement)
             }
         }
+        return grid
+    }
 
-        // title
+    const _generateGridTitle = gridName => {
         const gridTitle = document.createElement('div')
         gridTitle.classList.add('grid-title')
         gridTitle.innerText = gridName.toUpperCase()
+        return gridTitle
+    }
+
+    const _getTitleAndGrid = gridName => {
+        const grid = _generateGrid(gridName)
+        const gridTitle = _generateGridTitle(gridName)
 
         // grid and title
         const gridAndTitle = document.createElement('div')
