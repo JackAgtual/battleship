@@ -76,11 +76,12 @@ export default function Gameboard() {
         return false
     }
 
-    const placeShip = ({ ship, origin, direction, shipGrid = _shipGrid, ships = _ships }) => {
+    const shipPlacementIsValid = ({ ship, origin, direction, shipGrid = _shipGrid }) => {
         direction = direction.toLowerCase()
         const shipLength = ship.getLength()
 
-        if (!_directionIsValid(direction) || !_shipIsInBounds(shipLength, origin, direction)) return null
+        if (!_directionIsValid(direction)) return false
+        if (!_shipIsInBounds(shipLength, origin, direction)) return false
 
         const shipCoordinates = _getShipCoordinates({
             shipLength,
@@ -91,7 +92,15 @@ export default function Gameboard() {
         if (_shipOverlapsWithExistingShip({
             shipCoordinates,
             shipGrid
-        })) return null;
+        })) return false
+
+        return shipCoordinates
+    }
+
+    const placeShip = ({ ship, origin, direction, shipGrid = _shipGrid, ships = _ships }) => {
+        const shipCoordinates = shipPlacementIsValid({ ship, origin, direction, shipGrid })
+
+        if (!shipCoordinates) return null;
 
         shipCoordinates.forEach(coordinate => {
             shipGrid[coordinate[0]][coordinate[1]] = ship
@@ -160,6 +169,7 @@ export default function Gameboard() {
     const _getGameboardSize = () => _gridSize
 
     return {
+        shipPlacementIsValid,
         placeShip,
         coordinateHasAlreadyBeenAttacked,
         receiveAttack,
