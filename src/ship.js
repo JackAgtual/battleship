@@ -9,8 +9,11 @@ export default function Ship({ length, numHits = 0 }) {
 
     const isSunk = () => _numHits >= _length
 
+    const getLength = () => _length
+
     return {
         hit,
-        isSunk
+        isSunk,
+        getLength
     }
 }
