@@ -46,6 +46,10 @@ dialog {
     border: 1px solid black;
 }
 
-.highlighted {
-    background-color: red;
+.valid-ship-placement {
+    background-color: #4dffa6;
+}
+
+.invalid-ship-placement {
+    background-color: #ff8080;
 }

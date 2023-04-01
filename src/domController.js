@@ -1,6 +1,5 @@
 export default function DomController() {
     const _gridSize = 10
-    const _shipPlacedHtmlClass = 'highlighted'
 
     const mockShip = {
         getLength: () => 4
@@ -61,8 +60,8 @@ export default function DomController() {
         const laydownGrid = _generateGrid('laydown')
         laydownGrid.childNodes
             .forEach(gridElement => {
-                gridElement.addEventListener('mouseover', () => _showShipPlacement(gridElement, mockShip, _shipOrientation))
-                gridElement.addEventListener('mouseleave', () => _showShipPlacement(gridElement, mockShip, _shipOrientation))
+                gridElement.addEventListener('mouseover', () => _showShipPlacement(Gameboard, gridElement, mockShip, _shipOrientation))
+                gridElement.addEventListener('mouseleave', () => _showShipPlacement(Gameboard, gridElement, mockShip, _shipOrientation))
             }
             )
 
@@ -75,11 +74,19 @@ export default function DomController() {
         })
     }
 
-    const _showShipPlacement = (gridElement, ship, shipOrientation) => {
+    const _showShipPlacement = (Gameboard, gridElement, ship, shipOrientation) => {
         const shipLength = ship.getLength()
 
         const startRow = Number(gridElement.dataset.row)
         const startCol = Number(gridElement.dataset.col)
+
+        const shipPlacementIsValid = Gameboard.shipPlacementIsValid({
+            ship,
+            origin: [startRow, startCol],
+            direction: shipOrientation
+        })
+
+        const shipPlacementHtmlClass = shipPlacementIsValid ? 'valid-ship-placement' : 'invalid-ship-placement'
 
         // Assuming only up and right orientations for the ship
         for (let i = 0; i < shipLength; i++) {
@@ -93,7 +100,9 @@ export default function DomController() {
                 targetCol = startCol + i
             }
             const curElement = document.querySelector(`#laydown-grid > [data-row="${targetRow}"][data-col="${targetCol}"]`)
-            curElement.classList.toggle(_shipPlacedHtmlClass)
+
+            if (curElement) curElement.classList.toggle(shipPlacementHtmlClass)
+            else break
         }
 
     }
