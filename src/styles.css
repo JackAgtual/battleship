@@ -53,3 +53,7 @@ dialog {
 .invalid-ship-placement {
     background-color: #ff8080;
 }
+
+.ship-placed {
+    background-color: #808080;
+}

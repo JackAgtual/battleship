@@ -1,5 +1,10 @@
 export default function DomController() {
     const _gridSize = 10
+    const _sipPlacementHtmlClasses = {
+        valid: 'valid-ship-placement',
+        invalid: 'invalid-ship-placement',
+        placed: 'ship-placed'
+    }
 
     const mockShip = {
         getLength: () => 4
@@ -62,6 +67,7 @@ export default function DomController() {
             .forEach(gridElement => {
                 gridElement.addEventListener('mouseover', () => _showShipPlacement(Gameboard, gridElement, mockShip, _shipOrientation))
                 gridElement.addEventListener('mouseleave', () => _showShipPlacement(Gameboard, gridElement, mockShip, _shipOrientation))
+                gridElement.addEventListener('click', () => _placePlayerShip(Gameboard, gridElement, mockShip, _shipOrientation))
             }
             )
 
@@ -69,10 +75,12 @@ export default function DomController() {
 
         const startGameBtn = document.getElementById('start-game')
         startGameBtn.addEventListener('click', () => {
-            _placePlayerShips(Gameboard)
             modal.showModal()
         })
     }
+
+    const _getLaydownGridElementAtCoordinate = coordinate => document
+        .querySelector(`#laydown-grid > [data-row="${coordinate[0]}"][data-col="${coordinate[1]}"]`)
 
     const _showShipPlacement = (Gameboard, gridElement, ship, shipOrientation) => {
         const shipLength = ship.getLength()
@@ -86,7 +94,8 @@ export default function DomController() {
             direction: shipOrientation
         })
 
-        const shipPlacementHtmlClass = shipPlacementIsValid ? 'valid-ship-placement' : 'invalid-ship-placement'
+        const shipPlacementHtmlClass = shipPlacementIsValid ?
+            _sipPlacementHtmlClasses.valid : _sipPlacementHtmlClasses.invalid
 
         // Assuming only up and right orientations for the ship
         for (let i = 0; i < shipLength; i++) {
@@ -99,16 +108,40 @@ export default function DomController() {
                 targetRow = startRow
                 targetCol = startCol + i
             }
-            const curElement = document.querySelector(`#laydown-grid > [data-row="${targetRow}"][data-col="${targetCol}"]`)
+            const curElement = _getLaydownGridElementAtCoordinate([targetRow, targetCol])
 
-            if (curElement) curElement.classList.toggle(shipPlacementHtmlClass)
-            else break
+            if (!curElement) break // out of bounds
+
+            if (curElement.classList.contains(_sipPlacementHtmlClasses.placed)) continue // ship is already placed there
+
+            curElement.classList.toggle(shipPlacementHtmlClass)
         }
-
     }
 
-    const _placePlayerShips = Gameboard => {
+    const _placePlayerShip = (Gameboard, gridElement, ship, shipOrientation) => {
+        const startRow = Number(gridElement.dataset.row)
+        const startCol = Number(gridElement.dataset.col)
 
+        const shipCoordinates = Gameboard.shipPlacementIsValid({
+            ship,
+            origin: [startRow, startCol],
+            direction: shipOrientation
+        })
+
+        if (!shipCoordinates) return
+
+        Gameboard.placeShip({
+            ship,
+            origin: [startRow, startCol],
+            direction: shipOrientation
+        })
+
+        shipCoordinates.forEach(coordinate => {
+            const gridElement = _getLaydownGridElementAtCoordinate(coordinate)
+            gridElement.classList.add(_sipPlacementHtmlClasses.placed)
+            gridElement.classList.remove(_sipPlacementHtmlClasses.valid)
+            gridElement.classList.remove(_sipPlacementHtmlClasses.invalid)
+        })
     }
 
     return {
