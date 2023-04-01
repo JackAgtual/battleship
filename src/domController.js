@@ -5,11 +5,11 @@ export default function DomController() {
         invalid: 'invalid-ship-placement',
         placed: 'ship-placed'
     }
+    let _shipOrientation = { orientation: 'right' } // using obj so it can be passed by reference
 
     const mockShip = {
         getLength: () => 4
     }
-    const _shipOrientation = 'right' // 'up' or 'right'
 
     const init = Gameboard => {
         const root = document.getElementById('root')
@@ -62,6 +62,8 @@ export default function DomController() {
 
     const _startGameModalInit = Gameboard => {
         const modal = document.getElementById('place-ships')
+
+        // laydown grid
         const laydownGrid = _generateGrid('laydown')
         laydownGrid.childNodes
             .forEach(gridElement => {
@@ -70,9 +72,15 @@ export default function DomController() {
                 gridElement.addEventListener('click', () => _placePlayerShip(Gameboard, gridElement, mockShip, _shipOrientation))
             }
             )
-
         modal.append(laydownGrid)
 
+        // rotate ships
+        document.getElementById('rotate-ship').addEventListener('click', () => {
+            if (_shipOrientation.orientation === 'right') _shipOrientation.orientation = 'up'
+            else _shipOrientation.orientation = 'right'
+        })
+
+        // start game
         const startGameBtn = document.getElementById('start-game')
         startGameBtn.addEventListener('click', () => {
             modal.showModal()
@@ -84,6 +92,7 @@ export default function DomController() {
 
     const _showShipPlacement = (Gameboard, gridElement, ship, shipOrientation) => {
         const shipLength = ship.getLength()
+        const orientation = shipOrientation.orientation
 
         const startRow = Number(gridElement.dataset.row)
         const startCol = Number(gridElement.dataset.col)
@@ -91,7 +100,7 @@ export default function DomController() {
         const shipPlacementIsValid = Gameboard.shipPlacementIsValid({
             ship,
             origin: [startRow, startCol],
-            direction: shipOrientation
+            direction: orientation
         })
 
         const shipPlacementHtmlClass = shipPlacementIsValid ?
@@ -101,7 +110,7 @@ export default function DomController() {
         for (let i = 0; i < shipLength; i++) {
             let targetRow, targetCol
 
-            if (shipOrientation === 'up') {
+            if (orientation === 'up') {
                 targetRow = startRow - i
                 targetCol = startCol
             } else {
@@ -121,11 +130,12 @@ export default function DomController() {
     const _placePlayerShip = (Gameboard, gridElement, ship, shipOrientation) => {
         const startRow = Number(gridElement.dataset.row)
         const startCol = Number(gridElement.dataset.col)
+        const orientation = shipOrientation.orientation
 
         const shipCoordinates = Gameboard.shipPlacementIsValid({
             ship,
             origin: [startRow, startCol],
-            direction: shipOrientation
+            direction: orientation
         })
 
         if (!shipCoordinates) return
@@ -133,7 +143,7 @@ export default function DomController() {
         Gameboard.placeShip({
             ship,
             origin: [startRow, startCol],
-            direction: shipOrientation
+            direction: orientation
         })
 
         shipCoordinates.forEach(coordinate => {
