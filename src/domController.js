@@ -5,6 +5,7 @@ export default function DomController() {
     const mockShip = {
         getLength: () => 4
     }
+    const _shipOrientation = 'right' // 'up' or 'right'
 
     const init = Gameboard => {
         const root = document.getElementById('root')
@@ -27,6 +28,8 @@ export default function DomController() {
         for (let i = 0; i < _gridSize; i++) {
             for (let j = 0; j < _gridSize; j++) {
                 const gridElement = document.createElement('div')
+                gridElement.dataset.row = i
+                gridElement.dataset.col = j
                 gridElement.classList.add('grid-element')
                 grid.appendChild(gridElement)
             }
@@ -58,10 +61,8 @@ export default function DomController() {
         const laydownGrid = _generateGrid('laydown')
         laydownGrid.childNodes
             .forEach(gridElement => {
-                gridElement.addEventListener('mouseover', () => _showShipPlacement(gridElement, mockShip))
-
-                // will also need to remove class from neighboring grid elements
-                gridElement.addEventListener('mouseleave', () => gridElement.classList.remove(_shipPlacedHtmlClass))
+                gridElement.addEventListener('mouseover', () => _showShipPlacement(gridElement, mockShip, _shipOrientation))
+                gridElement.addEventListener('mouseleave', () => _showShipPlacement(gridElement, mockShip, _shipOrientation))
             }
             )
 
@@ -74,11 +75,27 @@ export default function DomController() {
         })
     }
 
-    const _showShipPlacement = (gridElement, ship) => {
+    const _showShipPlacement = (gridElement, ship, shipOrientation) => {
         const shipLength = ship.getLength()
 
-        // get neighboring grid elements that need to be highlighted
-        gridElement.classList.toggle(_shipPlacedHtmlClass)
+        const startRow = Number(gridElement.dataset.row)
+        const startCol = Number(gridElement.dataset.col)
+
+        // Assuming only up and right orientations for the ship
+        for (let i = 0; i < shipLength; i++) {
+            let targetRow, targetCol
+
+            if (shipOrientation === 'up') {
+                targetRow = startRow - i
+                targetCol = startCol
+            } else {
+                targetRow = startRow
+                targetCol = startCol + i
+            }
+            const curElement = document.querySelector(`#laydown-grid > [data-row="${targetRow}"][data-col="${targetCol}"]`)
+            curElement.classList.toggle(_shipPlacedHtmlClass)
+        }
+
     }
 
     const _placePlayerShips = Gameboard => {
