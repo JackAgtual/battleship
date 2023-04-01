@@ -1,5 +1,10 @@
 export default function DomController() {
     const _gridSize = 10
+    const _shipPlacedHtmlClass = 'highlighted'
+
+    const mockShip = {
+        getLength: () => 4
+    }
 
     const init = Gameboard => {
         const root = document.getElementById('root')
@@ -52,8 +57,12 @@ export default function DomController() {
         const modal = document.getElementById('place-ships')
         const laydownGrid = _generateGrid('laydown')
         laydownGrid.childNodes
-            .forEach(gridElement => gridElement.
-                addEventListener('mouseover', () => _showShipPlacement(gridElement, null))
+            .forEach(gridElement => {
+                gridElement.addEventListener('mouseover', () => _showShipPlacement(gridElement, mockShip))
+
+                // will also need to remove class from neighboring grid elements
+                gridElement.addEventListener('mouseleave', () => gridElement.classList.remove(_shipPlacedHtmlClass))
+            }
             )
 
         modal.append(laydownGrid)
@@ -66,7 +75,10 @@ export default function DomController() {
     }
 
     const _showShipPlacement = (gridElement, ship) => {
-        gridElement.classList.toggle('highlighted')
+        const shipLength = ship.getLength()
+
+        // get neighboring grid elements that need to be highlighted
+        gridElement.classList.toggle(_shipPlacedHtmlClass)
     }
 
     const _placePlayerShips = Gameboard => {
