@@ -9,6 +9,7 @@ export default function DomController() {
     let _curShipIdx
     let _curShip
     let _availableShips
+    const _curShipNameElement = document.getElementById('ship-being-placed')
 
     const init = Gameboard => {
         const root = document.getElementById('root')
@@ -160,6 +161,7 @@ export default function DomController() {
     const _updateCurrentShip = () => {
         _curShipIdx = _curShipIdx || _curShipIdx === 0 ? _curShipIdx + 1 : 0
         _curShip = _availableShips[_curShipIdx].ship
+        _curShipNameElement.innerText = _availableShips[_curShipIdx].name
     }
 
     return {
