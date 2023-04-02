@@ -11,6 +11,8 @@ export default function DomController() {
     let _curShip
     let _availableShips
     const _curShipNameElement = document.getElementById('ship-being-placed')
+    const [_laydownGridParentId, _playerGridParentId] = ['laydown-grid', 'player-grid']
+
 
     const init = Gameboard => {
         const root = document.getElementById('root')
@@ -89,8 +91,8 @@ export default function DomController() {
         })
     }
 
-    const _getLaydownGridElementAtCoordinate = coordinate => document
-        .querySelector(`#laydown-grid > [data-row="${coordinate[0]}"][data-col="${coordinate[1]}"]`)
+    const _getGridElementAtCoordinate = (gridParentId, coordinate) => document
+        .querySelector(`#${gridParentId} > [data-row="${coordinate[0]}"][data-col="${coordinate[1]}"]`)
 
     const _showShipPlacement = (Gameboard, gridElement, ship, shipOrientation) => {
         const shipLength = ship.getLength()
@@ -119,7 +121,7 @@ export default function DomController() {
                 targetRow = startRow
                 targetCol = startCol + i
             }
-            const curElement = _getLaydownGridElementAtCoordinate([targetRow, targetCol])
+            const curElement = _getGridElementAtCoordinate(_laydownGridParentId, [targetRow, targetCol])
 
             if (!curElement) break // out of bounds
 
@@ -149,7 +151,7 @@ export default function DomController() {
         })
 
         shipCoordinates.forEach(coordinate => {
-            const gridElement = _getLaydownGridElementAtCoordinate(coordinate)
+            const gridElement = _getGridElementAtCoordinate(_laydownGridParentId, coordinate)
             gridElement.classList.add(_sipPlacementHtmlClasses.placed)
             gridElement.classList.remove(_sipPlacementHtmlClasses.valid)
             gridElement.classList.remove(_sipPlacementHtmlClasses.invalid)
