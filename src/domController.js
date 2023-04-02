@@ -168,6 +168,14 @@ export default function DomController() {
     }
 
     const _endPlayerShipPlacement = () => {
+        // get all elements with ship-placed class then you can record rows and columns from there then copy to other grid
+        const gridElementsWithShip = document.querySelectorAll('#laydown-grid > .ship-placed')
+        gridElementsWithShip.forEach(gridElement => {
+            const row = Number(gridElement.dataset.row)
+            const col = Number(gridElement.dataset.col)
+            const playerGridElementWithShip = _getGridElementAtCoordinate('player-grid', [row, col])
+            playerGridElementWithShip.classList.add('ship-placed')
+        })
         modal.close()
     }
 
