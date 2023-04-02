@@ -155,13 +155,19 @@ export default function DomController() {
             gridElement.classList.remove(_sipPlacementHtmlClasses.valid)
             gridElement.classList.remove(_sipPlacementHtmlClasses.invalid)
         })
-        _updateCurrentShip()
+
+        if (_curShipIdx >= _availableShips.length - 1) _endPlayerShipPlacement()
+        else _updateCurrentShip()
     }
 
     const _updateCurrentShip = () => {
         _curShipIdx = _curShipIdx || _curShipIdx === 0 ? _curShipIdx + 1 : 0
         _curShip = _availableShips[_curShipIdx].ship
         _curShipNameElement.innerText = _availableShips[_curShipIdx].name
+    }
+
+    const _endPlayerShipPlacement = () => {
+        console.log('done')
     }
 
     return {
