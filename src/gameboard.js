@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import Ship from './ship'
 
 export default function Gameboard() {
     const _gridSize = 10
@@ -6,6 +7,29 @@ export default function Gameboard() {
     const _ships = []
     const _missedAttacks = []
     const _hitAttacks = []
+    const _availableShips = [
+        {
+            name: 'Carrier',
+            ship: Ship({ length: 5 })
+        },
+        {
+            name: 'Battleship',
+            ship: Ship({ length: 4 })
+        },
+        {
+            name: 'Destroyer',
+            ship: Ship({ length: 3 })
+        },
+        {
+            name: 'Submarine',
+            ship: Ship({ length: 3 })
+        },
+        {
+            name: 'Patrol Boat',
+            ship: Ship({ length: 1 })
+        },
+
+    ]
 
     const _directionIsValid = direction => ['up', 'down', 'left', 'right'].includes(direction.toLowerCase())
 
@@ -168,6 +192,8 @@ export default function Gameboard() {
 
     const _getGameboardSize = () => _gridSize
 
+    const getAvailableShips = () => _availableShips
+
     return {
         shipPlacementIsValid,
         placeShip,
@@ -175,5 +201,6 @@ export default function Gameboard() {
         receiveAttack,
         attackRandomCoordinate,
         allShipsAreSunk,
+        getAvailableShips
     }
 }
