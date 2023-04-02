@@ -1,5 +1,6 @@
 export default function DomController() {
     const _gridSize = 10
+    const modal = document.getElementById('place-ships')
     const _sipPlacementHtmlClasses = {
         valid: 'valid-ship-placement',
         invalid: 'invalid-ship-placement',
@@ -64,8 +65,6 @@ export default function DomController() {
     }
 
     const _startGameModalInit = Gameboard => {
-        const modal = document.getElementById('place-ships')
-
         // laydown grid
         const laydownGrid = _generateGrid('laydown')
         laydownGrid.childNodes
@@ -167,7 +166,7 @@ export default function DomController() {
     }
 
     const _endPlayerShipPlacement = () => {
-        console.log('done')
+        modal.close()
     }
 
     return {
