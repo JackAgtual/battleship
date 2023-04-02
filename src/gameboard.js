@@ -194,6 +194,24 @@ export default function Gameboard() {
 
     const getAvailableShips = () => _availableShips
 
+    const randomlyPlaceShips = () => {
+        _availableShips.forEach(shipObj => {
+            let randomCoordinate, randomDirection
+            do {
+                randomCoordinate = [
+                    Math.floor(Math.random() * _gridSize),
+                    Math.floor(Math.random() * _gridSize)
+                ]
+                randomDirection = ['up', 'down', 'left', 'right']
+                    .at(Math.floor(Math.random() * 4))
+            } while (!placeShip({
+                ship: shipObj.ship,
+                origin: randomCoordinate,
+                direction: randomDirection
+            }))
+        })
+    }
+
     return {
         shipPlacementIsValid,
         placeShip,
@@ -201,6 +219,7 @@ export default function Gameboard() {
         receiveAttack,
         attackRandomCoordinate,
         allShipsAreSunk,
-        getAvailableShips
+        getAvailableShips,
+        randomlyPlaceShips
     }
 }
