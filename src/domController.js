@@ -30,6 +30,11 @@ export default function DomController() {
         _startGameModalInit(Gameboard)
     }
 
+    const _getCoordinateFromGridElement = gridElement => [
+        Number(gridElement.dataset.row),
+        Number(gridElement.dataset.col)
+    ]
+
     const _generateGrid = gridName => {
         const grid = document.createElement('div')
         grid.classList.add('gameboard-grid')
@@ -98,12 +103,11 @@ export default function DomController() {
         const shipLength = ship.getLength()
         const orientation = shipOrientation.orientation
 
-        const startRow = Number(gridElement.dataset.row)
-        const startCol = Number(gridElement.dataset.col)
+        const shipOrigin = _getCoordinateFromGridElement(gridElement)
 
         const shipPlacementIsValid = Gameboard.shipPlacementIsValid({
             ship,
-            origin: [startRow, startCol],
+            origin: shipOrigin,
             direction: orientation
         })
 
@@ -115,11 +119,11 @@ export default function DomController() {
             let targetRow, targetCol
 
             if (orientation === 'up') {
-                targetRow = startRow - i
-                targetCol = startCol
+                targetRow = shipOrigin[0] - i
+                targetCol = shipOrigin[1]
             } else {
-                targetRow = startRow
-                targetCol = startCol + i
+                targetRow = shipOrigin[0]
+                targetCol = shipOrigin[1] + i
             }
             const curElement = _getGridElementAtCoordinate(_laydownGridParentId, [targetRow, targetCol])
 
@@ -132,13 +136,12 @@ export default function DomController() {
     }
 
     const _placePlayerShip = (Gameboard, gridElement, ship, shipOrientation) => {
-        const startRow = Number(gridElement.dataset.row)
-        const startCol = Number(gridElement.dataset.col)
+        const shipOrigin = _getCoordinateFromGridElement(gridElement)
         const orientation = shipOrientation.orientation
 
         const shipCoordinates = Gameboard.shipPlacementIsValid({
             ship,
-            origin: [startRow, startCol],
+            origin: shipOrigin,
             direction: orientation
         })
 
@@ -146,7 +149,7 @@ export default function DomController() {
 
         Gameboard.placeShip({
             ship,
-            origin: [startRow, startCol],
+            origin: shipOrigin,
             direction: orientation
         })
 
@@ -171,9 +174,8 @@ export default function DomController() {
         // get all elements with ship-placed class then you can record rows and columns from there then copy to other grid
         const gridElementsWithShip = document.querySelectorAll('#laydown-grid > .ship-placed')
         gridElementsWithShip.forEach(gridElement => {
-            const row = Number(gridElement.dataset.row)
-            const col = Number(gridElement.dataset.col)
-            const playerGridElementWithShip = _getGridElementAtCoordinate('player-grid', [row, col])
+            const coordinate = _getCoordinateFromGridElement(gridElement)
+            const playerGridElementWithShip = _getGridElementAtCoordinate('player-grid', coordinate)
             playerGridElementWithShip.classList.add('ship-placed')
         })
         modal.close()
