@@ -6,10 +6,9 @@ export default function DomController() {
         placed: 'ship-placed'
     }
     let _shipOrientation = { orientation: 'right' } // using obj so it can be passed by reference
-
-    const mockShip = {
-        getLength: () => 4
-    }
+    let _curShipIdx
+    let _curShip
+    let _availableShips
 
     const init = Gameboard => {
         const root = document.getElementById('root')
@@ -20,6 +19,9 @@ export default function DomController() {
         gameboardContainer.append(_getTitleAndGrid('computer'))
 
         root.append(gameboardContainer)
+
+        _availableShips = Gameboard.getAvailableShips();
+        _updateCurrentShip()
 
         _startGameModalInit(Gameboard)
     }
@@ -67,9 +69,9 @@ export default function DomController() {
         const laydownGrid = _generateGrid('laydown')
         laydownGrid.childNodes
             .forEach(gridElement => {
-                gridElement.addEventListener('mouseover', () => _showShipPlacement(Gameboard, gridElement, mockShip, _shipOrientation))
-                gridElement.addEventListener('mouseleave', () => _showShipPlacement(Gameboard, gridElement, mockShip, _shipOrientation))
-                gridElement.addEventListener('click', () => _placePlayerShip(Gameboard, gridElement, mockShip, _shipOrientation))
+                gridElement.addEventListener('mouseover', () => _showShipPlacement(Gameboard, gridElement, _curShip, _shipOrientation))
+                gridElement.addEventListener('mouseleave', () => _showShipPlacement(Gameboard, gridElement, _curShip, _shipOrientation))
+                gridElement.addEventListener('click', () => _placePlayerShip(Gameboard, gridElement, _curShip, _shipOrientation))
             }
             )
         modal.append(laydownGrid)
@@ -152,6 +154,12 @@ export default function DomController() {
             gridElement.classList.remove(_sipPlacementHtmlClasses.valid)
             gridElement.classList.remove(_sipPlacementHtmlClasses.invalid)
         })
+        _updateCurrentShip()
+    }
+
+    const _updateCurrentShip = () => {
+        _curShipIdx = _curShipIdx || _curShipIdx === 0 ? _curShipIdx + 1 : 0
+        _curShip = _availableShips[_curShipIdx].ship
     }
 
     return {
