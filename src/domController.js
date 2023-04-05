@@ -12,22 +12,26 @@ export default function DomController() {
     let _availableShips
     const _curShipNameElement = document.getElementById('ship-being-placed')
     const [_laydownGridParentId, _playerGridParentId] = ['laydown-grid', 'player-grid']
+    let _PlayerGameboard, _ComputerGameboard
 
 
-    const init = Gameboard => {
+    const init = (PlayerGameboard, ComputerGameboard) => {
         const root = document.getElementById('root')
         const gameboardContainer = document.createElement('div')
         gameboardContainer.id = 'gamebaord-container'
+
+        _PlayerGameboard = PlayerGameboard
+        _ComputerGameboard = ComputerGameboard
 
         gameboardContainer.append(_getTitleAndGrid('player'))
         gameboardContainer.append(_getTitleAndGrid('computer'))
 
         root.append(gameboardContainer)
 
-        _availableShips = Gameboard.getAvailableShips();
+        _availableShips = _PlayerGameboard.getAvailableShips();
         _updateCurrentShip()
 
-        _startGameModalInit(Gameboard)
+        _startGameModalInit(_PlayerGameboard)
     }
 
     const _getCoordinateFromGridElement = gridElement => [
@@ -71,14 +75,14 @@ export default function DomController() {
         return gridAndTitle
     }
 
-    const _startGameModalInit = Gameboard => {
+    const _startGameModalInit = () => {
         // laydown grid
         const laydownGrid = _generateGrid('laydown')
         laydownGrid.childNodes
             .forEach(gridElement => {
-                gridElement.addEventListener('mouseover', () => _showShipPlacement(Gameboard, gridElement, _curShip, _shipOrientation))
-                gridElement.addEventListener('mouseleave', () => _showShipPlacement(Gameboard, gridElement, _curShip, _shipOrientation))
-                gridElement.addEventListener('click', () => _placePlayerShip(Gameboard, gridElement, _curShip, _shipOrientation))
+                gridElement.addEventListener('mouseover', () => _showShipPlacement(gridElement, _curShip, _shipOrientation))
+                gridElement.addEventListener('mouseleave', () => _showShipPlacement(gridElement, _curShip, _shipOrientation))
+                gridElement.addEventListener('click', () => _placePlayerShip(gridElement, _curShip, _shipOrientation))
             }
             )
         modal.append(laydownGrid)
@@ -99,13 +103,13 @@ export default function DomController() {
     const _getGridElementAtCoordinate = (gridParentId, coordinate) => document
         .querySelector(`#${gridParentId} > [data-row="${coordinate[0]}"][data-col="${coordinate[1]}"]`)
 
-    const _showShipPlacement = (Gameboard, gridElement, ship, shipOrientation) => {
+    const _showShipPlacement = (gridElement, ship, shipOrientation) => {
         const shipLength = ship.getLength()
         const orientation = shipOrientation.orientation
 
         const shipOrigin = _getCoordinateFromGridElement(gridElement)
 
-        const shipPlacementIsValid = Gameboard.shipPlacementIsValid({
+        const shipPlacementIsValid = _PlayerGameboard.shipPlacementIsValid({
             ship,
             origin: shipOrigin,
             direction: orientation
@@ -135,11 +139,11 @@ export default function DomController() {
         }
     }
 
-    const _placePlayerShip = (Gameboard, gridElement, ship, shipOrientation) => {
+    const _placePlayerShip = (gridElement, ship, shipOrientation) => {
         const shipOrigin = _getCoordinateFromGridElement(gridElement)
         const orientation = shipOrientation.orientation
 
-        const shipCoordinates = Gameboard.shipPlacementIsValid({
+        const shipCoordinates = _PlayerGameboard.shipPlacementIsValid({
             ship,
             origin: shipOrigin,
             direction: orientation
@@ -147,7 +151,7 @@ export default function DomController() {
 
         if (!shipCoordinates) return
 
-        Gameboard.placeShip({
+        _PlayerGameboard.placeShip({
             ship,
             origin: shipOrigin,
             direction: orientation
