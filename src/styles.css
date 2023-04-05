@@ -49,6 +49,10 @@ dialog {
     align-items: center;
 }
 
+.clickable:hover {
+    cursor: pointer;
+}
+
 .valid-ship-placement {
     background-color: #4dffa6;
 }

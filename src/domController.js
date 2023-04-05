@@ -189,6 +189,7 @@ export default function DomController() {
     const _addAttackEventListenerToComputerGameboard = () => {
         document.getElementById('computer-grid').childNodes
             .forEach(gridElement => {
+                gridElement.classList.add('clickable')
                 gridElement.addEventListener('click', () => {
                     const attackResult = _ComputerGameboard.receiveAttack({
                         attackCoordinate: _getCoordinateFromGridElement(gridElement)
