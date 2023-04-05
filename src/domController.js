@@ -183,6 +183,27 @@ export default function DomController() {
             playerGridElementWithShip.classList.add('ship-placed')
         })
         modal.close()
+        _addAttackEventListenerToComputerGameboard()
+    }
+
+    const _addAttackEventListenerToComputerGameboard = () => {
+        document.getElementById('computer-grid').childNodes
+            .forEach(gridElement => {
+                gridElement.addEventListener('click', () => {
+                    const attackResult = _ComputerGameboard.receiveAttack({
+                        attackCoordinate: _getCoordinateFromGridElement(gridElement)
+                    })
+
+                    if (attackResult === null) return
+
+                    const circle = document.createElement('div')
+                    circle.classList.add('circle')
+                    gridElement.appendChild(circle)
+                    if (attackResult) circle.classList.add('hit')
+                    else circle.classList.add('miss')
+                })
+            })
+
     }
 
     return {

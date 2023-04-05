@@ -44,6 +44,9 @@ dialog {
 
 .grid-element {
     border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .valid-ship-placement {
@@ -56,4 +59,18 @@ dialog {
 
 .ship-placed {
     background-color: #808080;
+}
+
+.circle {
+    height: 50%;
+    width: 50%;
+    border-radius: 50%;
+}
+
+.circle.hit {
+    background-color: red;
+}
+
+.circle.miss {
+    background-color: black;
 }
